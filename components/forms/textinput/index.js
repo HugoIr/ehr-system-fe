@@ -13,8 +13,8 @@ const TextInput = (props) => {
           {title} <Asterisk isRequired={rules?.['required']} />
         </FormLabel>}
         <Input
-          bgColor='#F1F1F1'
-          borderRadius={10}
+          bgColor='#F4F5F9'
+          borderRadius={8}
           defaultValue={defaultValue}
           
           id={id}

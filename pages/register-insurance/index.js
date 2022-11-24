@@ -32,7 +32,7 @@ const Register = () => {
     ]
     useEffect(() => {
         if (isAuthenticate()) {
-            route.push(ROUTE.DASHBOARD)
+            route.push(ROUTE.HOME)
         } 
     })
     
@@ -119,7 +119,7 @@ const Register = () => {
                      )}
 
                     <Box mb='20px' />
-                    <Button id='signInButton' colorScheme='green' type='submit' width='12em' borderRadius={10}>
+                    <Button id='signInButton' colorScheme='green' type='submit' width='12em' borderRadius={8}>
                         {isLoading ? <Spinner /> : "Sign Up"}
                     </Button>
                 </Box>

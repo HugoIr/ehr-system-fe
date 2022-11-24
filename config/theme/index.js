@@ -2,10 +2,6 @@ import { extendTheme, theme as base } from '@chakra-ui/react';
 
 // 2. Call `extendTheme` and pass your custom values
 const theme = extendTheme({
-  fonts: {
-    heading: `Open Sans, ${base.fonts?.heading}`,
-    body: `Open Sans, ${base.fonts?.body}`,
-  },
   breakpoints: {
     xs: '10em',
     sm: '30em',
@@ -18,6 +14,9 @@ const theme = extendTheme({
   colors: {
     blueChill: {
       500: '#4B8F8C',
+    },
+    green50: {
+      500: '#CBD5E0',
     }
   }
 });

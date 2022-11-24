@@ -1,8 +1,9 @@
-import { Box, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tooltip, Tr, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tooltip, Tr, useDisclosure } from '@chakra-ui/react'
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef } from "react";
 import { getOrganization, getUserToken } from '../config/api/auth';
+import ROUTE from '../config/api/route';
 
 export default function Home() {
   // const dataFetchedRef = useRef(false);
@@ -55,6 +56,10 @@ export default function Home() {
   return error ? <div>There is no EHR found</div> : (
     
     <>
+    <Button onClick={() => router.push(ROUTE.CREATE)} ml='24px' id='createNewEhr' colorScheme='green' type='submit' width='12em' borderRadius={8}>
+      Create New EHR
+    </Button>
+    <Box mb='30px' />
     <TableContainer px="40px">
   <Table variant='simple'>
     <Thead>

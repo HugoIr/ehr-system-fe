@@ -23,9 +23,9 @@ const PasswordInput = (props) => {
         <Input
             type={show ? 'text' : 'password'}
             id={id}
-            bgColor='#F1F1F1'
+            bgColor='#F4F5F9'
             placeholder={placeholder}
-            borderRadius={10}
+            borderRadius={8}
 
             {...register(id, rules)}
           />

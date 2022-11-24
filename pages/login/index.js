@@ -16,7 +16,7 @@ const Login = () => {
     const route = useRouter();
     useEffect(() => {
         if (isAuthenticate()) {
-            route.push(ROUTE.DASHBOARD)
+            route.push(ROUTE.HOME)
         } 
     })
     
@@ -98,7 +98,7 @@ const Login = () => {
 
                     <Box mb={responseMessage ? '10px' : '20px'} />
 
-                    <Button form="form-login" id='signInButton' colorScheme='green' type='submit' width='12em' borderRadius={10}>
+                    <Button form="form-login" id='signInButton' colorScheme='green' type='submit' width='12em' borderRadius={8}>
                         {isLoading ? <Spinner /> : "Sign In"}
                     </Button>
                     

@@ -5,6 +5,7 @@ const ROUTE = {
     LOGOUT: '/logout',
     DETAIL: '/:id/detail',
     CREATE: '/create',
+    UPDATE: '/:id/update',
   };
   
 export default ROUTE;

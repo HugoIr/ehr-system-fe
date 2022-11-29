@@ -1,4 +1,4 @@
-import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tooltip, Tr, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tooltip, Tr, useDisclosure } from '@chakra-ui/react'
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef } from "react";
@@ -15,7 +15,7 @@ export default function Home() {
   const router = useRouter();
   const organizationType = getOrganization()
   const [error, setError] = useState()
-  console.log("ORGA type ", organizationType)
+  const [ehrHistory, setEhrHistory] = useState([])
   useEffect(() => {
     const url = (organizationType == 'hospital') ? 'http://localhost:8000/ehr/' : 'http://localhost:8000/insurance/ehr/'
     axios.get(url, {
@@ -23,10 +23,6 @@ export default function Home() {
 				Authorization: getUserToken()
 			}
 		}).then( async (res) => {
-      console.log("res ", res)
-      console.log("res rslt ", res['data']['result'])
-      // ehrData.push(res['data']['result'])
-      // console.log("EHR data " , ehrData )
       setEhrData(res['data']['result'])
     }).catch((error) => {
       console.log("ERROR ", error)
@@ -42,12 +38,25 @@ export default function Home() {
         }
       }
       ).then((response)=>{
-        console.log("RESPONSE ", response)
+      
         setEhrDetail(response.data)
       })
     }
 	},[ehrId])
-  
+
+  useEffect(()=>{
+    if (ehrId != undefined) {
+      axios.get(`http://localhost:8000/ehr/history/${ehrId}`, {
+        headers: {
+          Authorization: getUserToken()
+        }
+      }
+      ).then((response)=>{
+        setEhrHistory(response.data.result)
+      })
+    }
+	},[ehrDetail, ehrId])
+
   const showModal = (id) => {
     setEhrId(id);
     onOpen()
@@ -69,6 +78,7 @@ export default function Home() {
         <Th>Gender</Th>
         <Th>Nationality</Th>
         <Th></Th>
+        <Th></Th>
       </Tr>
     </Thead>
     <Tbody>
@@ -77,21 +87,20 @@ export default function Home() {
           <Td>{element['Record'].name}</Td>
           <Td>{element['Record'].gender}</Td>
           <Td>{element['Record'].nationality}</Td>
+          <Td onClick={()=> router.push(`update/${element['Key']}`)}>update</Td>
           <Td onClick={()=> showModal(element['Key'])}>detail</Td>
         </Tr> )}
        
     </Tbody>
   </Table>
 </TableContainer>
-
-{ehrDetail.result != undefined && <Modal onClose={onClose} isOpen={isOpen} size={'2xl'} scrollBehavior={'inside'}>
+{ehrDetail.result != undefined && ehrHistory != undefined && <Modal onClose={onClose} isOpen={isOpen} size={'6xl'} scrollBehavior={'inside'}>
           <ModalOverlay />
-          <ModalContent p="20px">
+          <ModalContent p="10px">
             <ModalCloseButton mr={'10px'} />
             <ModalBody>
               <div>
-                  {console.log("dwdw" ,ehrDetail)}
-                 <Box px="40px">
+                 <Box>
                     <div>ID: {ehrId} </div> 
                     <div>Name: {ehrDetail.result.name} </div>
                     <div>Gender: {ehrDetail.result.gender} </div>
@@ -99,6 +108,50 @@ export default function Home() {
                     <div>Medical History:  </div>
                     
                 </Box>
+                <Box mb='24px' />
+                <Text mb='20px' >Data History: </Text>
+
+                <TableContainer px="40px">
+                  <Table variant='simple'>
+                    <Thead>
+                      <Tr>
+                        <Th>Tx ID</Th>
+                        <Th>Timestamp</Th>
+                        <Th>Name</Th>
+                        <Th>Gender</Th>
+                        <Th>Nationality</Th>
+                        <Th>Medical History</Th>
+                        <Th>Diagnose</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                        {ehrHistory != [] && ehrHistory.map( (element, index) => <Tr key={element['txId']}>
+
+                          <Td>{element['txId']}</Td>
+                          <Td>{new Date(element['timestamp']).toISOString()}</Td>
+                          <Td>{element['value'].name}</Td>
+                          <Td>{element['value'].gender}</Td>
+                          <Td>{element['value'].nationality}</Td>
+                          <Td>
+                            <ul>
+                              {element['value'].medicalHistory.map((element,index) => 
+                                <li key={index}>{element.date}: {element.description}</li>
+                              )}
+                            </ul>
+                          </Td>
+                          <Td>
+                            <ul>
+                              {element['value'].diagnose.map((element,index) => 
+                                <li key={index}>{element.date}: {element.description}</li>
+                              )}
+                            </ul>
+                          </Td>
+                          
+                        </Tr> )}
+                      
+                    </Tbody>
+                  </Table>
+                </TableContainer>
               </div>
             </ModalBody>
           </ModalContent>

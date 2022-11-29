@@ -16,14 +16,10 @@ const Detail = () => {
 
     const getEhrById = async (id) => {
         await axios.get(`http://localhost:8000/ehr/${id}`).then( async (res) => {
-        console.log("res ", res['data']['result'])
-        // ehrData.push(res['data']['result'])
-        // console.log("EHR data " , ehrData )
         setEhrData(res['data']['result'])
         })
     }
     useEffect(() => {
-        console.log("ID ", id)
         getEhrById(id)
     }, [])  
     return (

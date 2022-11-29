@@ -1,7 +1,7 @@
 import TextInput from '../../components/forms/textinput/index.js';
-import { Button, Spinner, Text,Box, Flex, Grid, GridItem, FormLabel, HStack  } from '@chakra-ui/react';
+import { Button, Spinner, Text,Box, FormLabel, HStack  } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
-import { getUserToken, setOrganization, setUserToken } from '../../config/api/auth.js';
+import { getUserToken} from '../../config/api/auth.js';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { isAuthenticate } from '../../config/middleware/middleware.js';
@@ -14,25 +14,53 @@ import MedicalHistoryForm from '../../components/forms/medicalHistoryForm/index.
 import DateInput from '../../components/forms/dateInput/index.js';
 import NumberInput from '../../components/forms/numberInput/index.js';
 
-const Create = () => {
+const Update = () => {
     
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter();
+    const [ehrData, setEhrData] = useState()
+    const [dateOfBirth, setDateOfBirth] = useState()
+    const { id } = useRouter().query;  
     useEffect(() => {
         if (!isAuthenticate()) {
             router.push(ROUTE.LOGIN)
         } 
     },[])
+
+    useEffect(()=>{
+        if (id != undefined) {
+          axios.get(`http://localhost:8000/ehr/${id}`, {
+            headers: {
+              Authorization: getUserToken()
+            }
+          }
+          ).then((response)=>{
+              setValue('name', "Haaaa")
+              
+              const fields = ["name","dateOfBirth","address","phoneNumber","gender","nationality","bloodType","height","weight","pulseRate","bloodPressure","respiratoryRate","medicalHistory","diagnose","insuranceName",]
+              fields.forEach(field => {
+                if (field == "dateOfBirth") {
+                    setDateOfBirth(response.data.result[field])
+                } else {
+                    setValue(field, response.data.result[field])
+                  }
+                });
+            setEhrData(response.data.result)
+          })
+        }
+    },[id])
     
     const {
       handleSubmit,
       register,
       control,
+      setValue,
       formState: { errors },
     } = useForm({
         defaultValues: {
+            name: "",
             medicalHistory: [{date: '', description: ''}],
-            diagnose:  [{date: '', description: ''}]
+            diagnose: [{description: ''}],
 
     }});
 
@@ -74,12 +102,15 @@ const Create = () => {
             if (data['dateOfBirth'].date != undefined) {
                 data['dateOfBirth'] = data['dateOfBirth'].date
             } 
-            await axios.post(`${BASE_URL}/ehr/`, data, {
+            console.log("DATA ", data)
+            
+            await axios.put(`${BASE_URL}/ehr/${id}`, data, {
                 headers: {
                   Authorization: getUserToken()
                 }
               })
             .then((response) => {
+
                 setIsLoading(false)
                 router.push(ROUTE.HOME)
             })
@@ -90,9 +121,9 @@ const Create = () => {
             setIsLoading(false)
         }
     };
-    return (
+    return ehrData != null && (
         <>
-            <Button onClick={() => router.push(ROUTE.HOME)} ml='24px' id='createNewEhr' colorScheme='gray' width='6em' borderRadius={8}>
+            <Button onClick={() => router.push(ROUTE.HOME)} ml='24px' id='updateNewEhr' colorScheme='gray' width='6em' borderRadius={8}>
                     Back
                 </Button>
                 
@@ -105,9 +136,9 @@ const Create = () => {
             
                
                 <Text mb={23} fontSize='32px' fontWeight='semibold' color='black'>
-                    Create EHR
+                    Update EHR
                 </Text>
-                <Box as='form' onSubmit={handleSubmit(onSubmit)} id="form-create">
+                <Box as='form' onSubmit={handleSubmit(onSubmit)} id="form-update">
                     <TextInput 
                         id="name"
                         title='Name' 
@@ -126,6 +157,7 @@ const Create = () => {
                             id="dateOfBirth"
                             title='Date of Birth' 
                             placeholder='Date of Birth' 
+                            defaultValue={dateOfBirth}
                             errors={errors}
                             register={register}
                         />
@@ -202,7 +234,7 @@ const Create = () => {
                     />
 
                     <Box mb='20px' />
-                    
+
                     <TextInput 
                         id="bloodType"
                         title='Blood Type' 
@@ -289,8 +321,8 @@ const Create = () => {
 
                     <Box mb={responseMessage ? '10px' : '20px'} />
 
-                    <Button form="form-create" id='createButton' colorScheme='green' type='submit' width='8em' borderRadius={8}>
-                        {isLoading ? <Spinner /> : "Create"}
+                    <Button form="form-update" id='updateButton' colorScheme='green' type='submit' width='8em' borderRadius={8}>
+                        {isLoading ? <Spinner /> : "Update"}
                     </Button>
                     
                     <Box my={20} />
@@ -304,4 +336,4 @@ const Create = () => {
 }
 
 
-export default Create;
+export default Update;

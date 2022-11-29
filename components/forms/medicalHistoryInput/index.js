@@ -1,9 +1,8 @@
 import { FormControl, FormErrorMessage, FormLabel, Grid, GridItem, Textarea } from '@chakra-ui/react';
 import { Input } from '@chakra-ui/input';
-import Asterisk from '../asterisk';
 
 const MedicalHistoryInput = (props) => {
-  const { id, errors, rules, register, defaultValue } = props;
+  const { id, errors, rules, register, value } = props;
 
   return ( <>      
     <Grid h='full' w='full' templateColumns={'repeat(8, 1fr)'} gap="20px">
@@ -12,7 +11,7 @@ const MedicalHistoryInput = (props) => {
               <Input
                   bgColor='#F4F5F9'
                   borderRadius={8}
-                  defaultValue={defaultValue}
+                  defaultValue={value}
                   type="datetime-local"
                   my="10px"
                   name={`${id}.date`}
@@ -26,7 +25,6 @@ const MedicalHistoryInput = (props) => {
                 <Textarea
                     bgColor='#F4F5F9'
                     borderRadius={8}
-                    defaultValue={defaultValue}
                     name={`${id}.description`}
                     {...register(`${id}.description`, rules)}
                 />

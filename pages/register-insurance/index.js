@@ -47,12 +47,9 @@ const Register = () => {
     const onSubmit = async (data) => {
         setIsLoading(true);
         try {
-            console.log("req DATA for register ", data)
-            console.log("dsadas" ,`${BASE_URL}/register/`)
             data['organizationType'] = 'insurance'
             await axios.post(`${BASE_URL}/register/`, data)
             .then((response) => {
-                console.log("RESPONSE register ", response)
                 setResponseMessage('')
                 setUserToken(data['email'])
                 setOrganization(data['organizationType'])
@@ -60,7 +57,6 @@ const Register = () => {
             })
         } catch(error) {
             console.log("ERROR ", error)
-            console.log('err data', error['response']['data']['result'])
             setResponseMessage(error['response']['data']['result'])
             setIsLoading(false)
         }

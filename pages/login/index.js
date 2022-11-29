@@ -31,14 +31,9 @@ const Login = () => {
     const onSubmit = async (data) => {
         setIsLoading(true);
         try {
-            // setUserToken(data['email'])
-            // setOrganization('hospital')
-
-            console.log("req DATA for login ", data)
             data['organizationType'] = 'hospital'
             await axios.post(`${BASE_URL}/login/`, data)
             .then((response) => {
-                console.log("RESPONSE login ", response)
                 setUserToken(response['data']['email'])
                 setOrganization(response['data']['organizationType'])
                 setIsLoading(false)
@@ -47,7 +42,6 @@ const Login = () => {
             
         } catch(error) {
             console.log("ERROR ", error)
-            console.log('err data', error['response']['data']['result'])
             setResponseMessage(error['response']['data']['result'])
             setIsLoading(false)
         }

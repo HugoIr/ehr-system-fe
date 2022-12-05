@@ -65,9 +65,9 @@ export default function Home() {
   return error ? <div>There is no EHR found</div> : (
     
     <>
-    <Button onClick={() => router.push(ROUTE.CREATE)} ml='24px' id='createNewEhr' colorScheme='green' type='submit' width='12em' borderRadius={8}>
+    {(organizationType == 'hospital') && <Button onClick={() => router.push(ROUTE.CREATE)} ml='24px' id='createNewEhr' colorScheme='green' type='submit' width='12em' borderRadius={8}>
       Create New EHR
-    </Button>
+    </Button>}
     <Box mb='30px' />
     <TableContainer px="40px">
   <Table variant='simple'>
@@ -77,7 +77,7 @@ export default function Home() {
         <Th>Name</Th>
         <Th>Gender</Th>
         <Th>Nationality</Th>
-        <Th></Th>
+        {(organizationType == 'hospital') && <Th></Th>}
         <Th></Th>
       </Tr>
     </Thead>
@@ -87,7 +87,7 @@ export default function Home() {
           <Td>{element['Record'].name}</Td>
           <Td>{element['Record'].gender}</Td>
           <Td>{element['Record'].nationality}</Td>
-          <Td onClick={()=> router.push(`update/${element['Key']}`)}>update</Td>
+          {(organizationType == 'hospital') && <Td onClick={()=> router.push(`update/${element['Key']}`)}>update</Td>}
           <Td onClick={()=> showModal(element['Key'])}>detail</Td>
         </Tr> )}
        

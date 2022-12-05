@@ -29,7 +29,7 @@ const Update = () => {
 
     useEffect(()=>{
         if (id != undefined) {
-          axios.get(`http://localhost:8000/ehr/${id}`, {
+          axios.get(`${BASE_URL}/ehr/${id}`, {
             headers: {
               Authorization: getUserToken()
             }

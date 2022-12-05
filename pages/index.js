@@ -1,12 +1,12 @@
 import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tooltip, Tr, useDisclosure } from '@chakra-ui/react'
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { getOrganization, getUserToken } from '../config/api/auth';
+import BASE_URL from '../config/api/constant';
 import ROUTE from '../config/api/route';
 
 export default function Home() {
-  // const dataFetchedRef = useRef(false);
   const [ehrData, setEhrData] = useState([]);
   const [ehrId, setEhrId]=useState()
   const [ehrDetail, setEhrDetail]=useState([])
@@ -17,7 +17,7 @@ export default function Home() {
   const [error, setError] = useState()
   const [ehrHistory, setEhrHistory] = useState([])
   useEffect(() => {
-    const url = (organizationType == 'hospital') ? 'http://localhost:8000/ehr/' : 'http://localhost:8000/insurance/ehr/'
+    const url = (organizationType == 'hospital') ? `${BASE_URL}/ehr/` : `${BASE_URL}/insurance/ehr/`
     axios.get(url, {
       headers: {
 				Authorization: getUserToken()
@@ -32,7 +32,7 @@ export default function Home() {
 
   useEffect(()=>{
     if (ehrId != undefined) {
-      axios.get(`http://localhost:8000/ehr/${ehrId}`, {
+      axios.get(`${BASE_URL}/ehr/${ehrId}`, {
         headers: {
           Authorization: getUserToken()
         }
@@ -46,7 +46,7 @@ export default function Home() {
 
   useEffect(()=>{
     if (ehrId != undefined) {
-      axios.get(`http://localhost:8000/ehr/history/${ehrId}`, {
+      axios.get(`${BASE_URL}/ehr/history/${ehrId}`, {
         headers: {
           Authorization: getUserToken()
         }

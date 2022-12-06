@@ -16,6 +16,7 @@ export default function Home() {
   const organizationType = getOrganization()
   const [error, setError] = useState()
   const [ehrHistory, setEhrHistory] = useState([])
+  const [isBusy, setIsBusy] = useState(true)
   useEffect(() => {
     const url = (organizationType == 'hospital') ? `${BASE_URL}/ehr/` : `${BASE_URL}/insurance/ehr/`
     axios.get(url, {
@@ -28,6 +29,7 @@ export default function Home() {
       console.log("ERROR ", error)
       setError(error)
     })
+    setIsBusy(false)
   }, [])
 
   useEffect(()=>{
@@ -62,7 +64,7 @@ export default function Home() {
     onOpen()
   }
   
-  return error ? <div>There is no EHR found</div> : (
+  return isBusy ? 'Loading...' : (error ? <div>There is no EHR found</div> : (
     
     <>
     {(organizationType == 'hospital') && <Button onClick={() => router.push(ROUTE.CREATE)} ml='24px' id='createNewEhr' colorScheme='green' type='submit' width='12em' borderRadius={8}>
@@ -157,5 +159,6 @@ export default function Home() {
           </ModalContent>
         </Modal>}
         </>
+  )
   )
 }

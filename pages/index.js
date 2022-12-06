@@ -121,7 +121,7 @@ export default function Home() {
                       <Tr>
                         <Th>Tx ID</Th>
                         <Th>Timestamp</Th>
-                        <Th>Nama</Th>
+                        <Th>Name</Th>
                         <Th>Blood Type</Th>
                         <Th>Height</Th>
                         <Th>Weight</Th>

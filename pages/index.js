@@ -105,9 +105,11 @@ export default function Home() {
                  <Box>
                     <div>ID: {ehrId} </div> 
                     <div>Name: {ehrDetail.result.name} </div>
+                    <div>Date of Birth: {ehrDetail.result.dateOfBirth} </div>
                     <div>Gender: {ehrDetail.result.gender} </div>
+                    <div>Phone Number: {ehrDetail.result.phoneNumber} </div>
                     <div>Nationality: {ehrDetail.result.nationality} </div>
-                    <div>Medical History:  </div>
+                    <div>Insurance Name: {ehrDetail.result.insuranceName} </div>
                     
                 </Box>
                 <Box mb='24px' />
@@ -119,9 +121,12 @@ export default function Home() {
                       <Tr>
                         <Th>Tx ID</Th>
                         <Th>Timestamp</Th>
-                        <Th>Name</Th>
-                        <Th>Gender</Th>
-                        <Th>Nationality</Th>
+                        <Th>Blood Type</Th>
+                        <Th>Height</Th>
+                        <Th>Weight</Th>
+                        <Th>Pulse Rate</Th>
+                        <Th>Blood Pressure</Th>
+                        <Th>Respiratory Rate</Th>
                         <Th>Medical History</Th>
                         <Th>Diagnose</Th>
                       </Tr>
@@ -131,9 +136,13 @@ export default function Home() {
 
                           <Td>{element['txId']}</Td>
                           <Td>{new Date(element['timestamp']).toISOString()}</Td>
-                          <Td>{element['value'].name}</Td>
-                          <Td>{element['value'].gender}</Td>
-                          <Td>{element['value'].nationality}</Td>
+                          <Td>{element['value'].bloodType}</Td>
+                          <Td>{element['value'].height}</Td>
+                          <Td>{element['value'].weight}</Td>
+                          <Td>{element['value'].pulseRate}</Td>
+                          <Td>{element['value'].bloodPressure}</Td>
+                          <Td>{element['value'].respiratoryRate}</Td>
+                          
                           <Td>
                             <ul>
                               {element['value'].medicalHistory.map((element,index) => 

@@ -6,7 +6,7 @@ import Navbar from '../components/navbar';
 function MyApp({ Component, pageProps }) {
   
   return (
-    typeof window !== 'undefined' && <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme}>
       
       <Navbar></Navbar>
       <Box pb="6%" />

@@ -121,6 +121,7 @@ export default function Home() {
                       <Tr>
                         <Th>Tx ID</Th>
                         <Th>Timestamp</Th>
+                        <Th>Nama</Th>
                         <Th>Blood Type</Th>
                         <Th>Height</Th>
                         <Th>Weight</Th>
@@ -136,6 +137,7 @@ export default function Home() {
 
                           <Td>{element['txId']}</Td>
                           <Td>{new Date(element['timestamp']).toISOString()}</Td>
+                          <Td>{element['value'].name}</Td>
                           <Td>{element['value'].bloodType}</Td>
                           <Td>{element['value'].height}</Td>
                           <Td>{element['value'].weight}</Td>
